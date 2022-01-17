@@ -2,6 +2,7 @@ const db = require( "../models" );
 const auth = require( "../middlewares/jwt" );
 const apiResponse = require( "../helpers/apiResponse" );
 const bcrypt = require( "bcrypt" );
+const jwt = require( "jsonwebtoken" );
 const cloudinary = require( '../cloudinary' );
 const mailer = require( "../helpers/mailer" );
 const { body, validationResult } = require( 'express-validator' );
@@ -9,34 +10,126 @@ var generateRandomNDigits = ( n ) =>
 {
     return Math.floor( Math.random() * ( 9 * Math.pow( 10, n ) ) ) + Math.pow( 10, n );
 };
-exports.ajkumar =[
-     function(req,res){
-        const usersObj = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            emailVerify:1
-          };
 
-          db.user.create(usersObj)
-          .then(data => {
-           
-           
-            return apiResponse.successResponseWithData( res, "Phone verify Already", data );
+//adminLogin
+exports.adminLogin = [
+    async function ( req, res )
+    {
+        try
+        {
+            const errors = validationResult( req );
 
-          })
-          .catch(err => {
-            res.status(500).send({
-              message:
-                err.message || "Some error occurred while creating the Tutorial."
-            });
-          });
-    
+            if ( !errors.isEmpty() )
+            {
+                return apiResponse.ErrorResponse( res, errors );
 
 
-        } 
-        
-    
+            }
+            const resultData = await db.User.findOne( { email: req.body.email } ).then( user =>
+            {
+
+                if ( user )
+                {
+                    bcrypt.compare( req.body.password, user.password, function ( err, same )
+                    {
+                        if ( same )
+                        {
+
+                            let userData = {
+                                id: user._id,
+                                firstname: user.firstname,
+                                lastname: user.lastname,
+                                email: user.email,
+                            };
+                            //Prepare JWT token for authentication
+                            const jwtPayload = userData;
+                            const jwtData = {
+                                expiresIn: process.env.JWT_TIMEOUT_DURATION,
+                            };
+                            const secret = process.env.JWT_SECRET;
+                            //Generated JWT token with Payload and secret.
+                            //userData.access_token = jwt.sign(jwtPayload, secret, jwtData);
+                            const access_token = jwt.sign( jwtPayload, secret, jwtData );
+
+
+                            const data = {
+                                access_token: access_token,
+                                users: user
+                            }
+                            return apiResponse.successResponseWithData( res, "Login Success.", data );
+
+                        } else
+                        {
+                            return apiResponse.unauthorizedResponse( res, "Email or Password wrong." );
+                        }
+                    } );
+
+                } else
+                {
+                    return apiResponse.warningResponseWithData( res, "Invalid Login Credentials", user );
+
+                }
+            } );
+
+        } catch ( err )
+        {
+            return apiResponse.ErrorResponse( res, err );
+        }
+    }
 ]
+//adminLogin
+
+//adminRegister
+exports.adminRegister = [
+    async function ( req, res )
+    {
+        const errors = validationResult( req );
+
+        if ( !errors.isEmpty() )
+        {
+            return apiResponse.ErrorResponse( res, errors );
+
+
+        }
+
+        var email = req.body.email;
+        var password = req.body.password;
+        var firstname = req.body.firstname;
+        var lastname = req.body.lastname;
+
+        const userDataObj = await db.User.findOne( { where: { email: email } } );
+        if ( userDataObj === null )
+        {
+            //create new user 
+            bcrypt.hash( password, 10, async function ( err, hash )
+            {
+                const userObjJSON = {
+                    first_name: firstname,
+                    last_name: lastname,
+                    email: email,
+                    password: hash
+                }
+                const saveDataObj = await db.User.create( userObjJSON );
+                return apiResponse.successResponseWithData( res, "New User Created.", saveDataObj );
+
+
+            } );
+
+            //create new user 
+
+
+        } else
+        {
+            return apiResponse.warningResponseWithData( res, "Already Registered User", userDataObj );
+        }
+
+    }
+]
+
+//adminRegister
+
+
+
 
 exports.checkMobileRegistered = [
     async function ( req, res )

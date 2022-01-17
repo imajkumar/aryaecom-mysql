@@ -1,67 +1,58 @@
 module.exports = {
     up: ( queryInterface, Sequelize ) =>
     {
-        return queryInterface.createTable( 'users', {
+        return queryInterface.createTable( 'root_users', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            firstName: {
+            first_name: {
                 type: Sequelize.STRING( 20 )
             },
-            lastName: {
+            last_name: {
                 type: Sequelize.STRING( 20 )
             },
 
             phone: {
                 type: Sequelize.STRING(15)
-            },
-            phoneCode: {
-                type: Sequelize.STRING(15)
-            },
-            phoneNumber: {
-                type: Sequelize.STRING(15)
-            },
+            },           
             email: {
                 type: Sequelize.STRING( 40 )
             },
-            userName: {
+            username: {
                 type: Sequelize.STRING( 50 )
             },
-            avatar: {
-
+            user_photo: {
                 type: Sequelize.TEXT
             },
             gender: {
                 type: Sequelize.BOOLEAN,
                 defaultValue: 1,
                 comment: '1=>male,2=>female,3=>Other'
-            },
-            birthDate: {
-                type: Sequelize.DATE
-            },
-            phoneVerify: {
+            },           
+            is_phone_verify: {
                 type: Sequelize.BOOLEAN,
                 comment: '1=>verify'
             },
-            emailVerify: {
+            is_email_verify: {
                 type: Sequelize.BOOLEAN,
                 comment: '1=>verify'
             },
             deviceType: {
                 type: Sequelize.BOOLEAN,
-                comment: '1=>IOS 2=>Android'
+                comment: '1=>IOS 2=>Android 3=>Web',
+                defaultValue: 3,
             },
             fcm_token: {
                 type: Sequelize.TEXT
             },
-            lastLoginAt: {
+            last_login_at: {
                 type: Sequelize.DATE
             },
            
-            isActive: {
+            is_user_active: {
                 type: Sequelize.BOOLEAN,
                 defaultValue: 1,
                 comment: '1=>active, 0=>deactive , 2=>deleted',
@@ -69,7 +60,7 @@ module.exports = {
             password: {
                 type: Sequelize.TEXT
             },
-            deviceId: {
+            device_Id: {
                 type: Sequelize.TEXT
             },
             role: {
@@ -90,6 +81,6 @@ module.exports = {
     },
     down: ( queryInterface, Sequelize ) =>
     {
-        return queryInterface.dropTable( 'users' );
+        return queryInterface.dropTable( 'admin_users' );
     }
 }

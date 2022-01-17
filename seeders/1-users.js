@@ -6,9 +6,9 @@ const params = require('../config/params.json');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('users', [
+    return queryInterface.bulkInsert('root_users', [
       {
-        firstName: 'The Store',
+        first_name: 'The Store',
         email: 'store@admin.com',
         phone: '+917703886088',
         password: bcrypt.hashSync('123456', config.saltRounds),
@@ -17,7 +17,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        firstName: 'The User',
+        first_name: 'The User',
         email: 'user@user.com',
         phone: '+919711309624',
         password: bcrypt.hashSync('123456', config.saltRounds),

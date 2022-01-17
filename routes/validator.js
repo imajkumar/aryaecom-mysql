@@ -1,8 +1,17 @@
-const {body, checkSchema, validationResult} = require('express-validator');
-const registrationSchema = {
-    gender: {
+   
+const adminRegisterSchema = {
+
+    firstname: {
         notEmpty: true,
-        errorMessage: "Gender field cannot be empty"
+        errorMessage: "Firstname is required"
+    },
+    lastname: {
+        notEmpty: true,
+        errorMessage: "Lastname is required"
+    },
+    phone: {
+        notEmpty: true,
+        errorMessage: "Enter valid phone number"
     },
     password: {
         isStrongPassword: {
@@ -13,25 +22,22 @@ const registrationSchema = {
         },
         errorMessage: "Password must be greater than 8 and contain at least one uppercase letter, one lowercase letter, and one number",
     },
-    phone: {
-        notEmpty: true,
-        errorMessage: "Phone number cannot be empty"
-    },
-   
-}
-const checkMobileRegistered = {
-   
-  
-    phone: {
-        notEmpty: true,
-        errorMessage: "Phone number cannot be empty"
-    },
-   
+
 }
 
+const adminLoginSchema = {
 
+    email: {
+        notEmpty: true,
+        errorMessage: "Firstname is required"
+    },
+    password: {
+        notEmpty: true,
+        errorMessage: "Enter valid password",
+    },
+
+}
 module.exports = {
-    registrationSchema,
-    checkMobileRegistered
-   
-  };
+    adminRegisterSchema,
+    adminLoginSchema
+};
