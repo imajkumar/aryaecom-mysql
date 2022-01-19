@@ -83,44 +83,54 @@ exports.adminLogin = [
 exports.adminRegister = [
     async function ( req, res )
     {
-        const errors = validationResult( req );
-
-        if ( !errors.isEmpty() )
+        try
         {
-            return apiResponse.ErrorResponse( res, errors );
+            const errors = validationResult( req );
 
-
-        }
-
-        var email = req.body.email;
-        var password = req.body.password;
-        var firstname = req.body.firstname;
-        var lastname = req.body.lastname;
-
-        const userDataObj = await db.User.findOne( { where: { email: email } } );
-        if ( userDataObj === null )
-        {
-            //create new user 
-            bcrypt.hash( password, 10, async function ( err, hash )
+            if ( !errors.isEmpty() )
             {
-                const userObjJSON = {
-                    first_name: firstname,
-                    last_name: lastname,
-                    email: email,
-                    password: hash
-                }
-                const saveDataObj = await db.User.create( userObjJSON );
-                return apiResponse.successResponseWithData( res, "New User Created.", saveDataObj );
+                return apiResponse.ErrorResponse( res, errors );
 
 
-            } );
+            }
 
-            //create new user 
+            var email = req.body.email;
+            var password = req.body.password;
+            var firstname = req.body.firstname;
+            var lastname = req.body.lastname;
+            var phone = req.body.phone;
+            var gender = req.body.gender;
+
+            const userDataObj = await db.User.findOne( { where: { email: email } } );
+            if ( userDataObj === null )
+            {
+                //create new user 
+                bcrypt.hash( password, 10, async function ( err, hash )
+                {
+                    const userObjJSON = {
+                        first_name: firstname,
+                        last_name: lastname,
+                        email: email,
+                        password: hash,
+                        phone: phone,
+                        gender: gender
+                    }
+                    const saveDataObj = await db.User.create( userObjJSON );
+                    return apiResponse.successResponseWithData( res, "New User Created.", saveDataObj );
 
 
-        } else
+                } );
+
+                //create new user 
+
+
+            } else
+            {
+                return apiResponse.warningResponseWithData( res, "Already Registered User", userDataObj );
+            }
+        } catch ( err )
         {
-            return apiResponse.warningResponseWithData( res, "Already Registered User", userDataObj );
+            return apiResponse.ErrorResponse( res, err );
         }
 
     }

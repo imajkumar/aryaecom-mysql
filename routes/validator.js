@@ -13,6 +13,10 @@ const adminRegisterSchema = {
         notEmpty: true,
         errorMessage: "Enter valid phone number"
     },
+    gender: {
+        notEmpty: true,
+        errorMessage: "Enter Gender 1=Male, 2=Female ,3 =Others"
+    },
     password: {
         isStrongPassword: {
             minLength: 8,

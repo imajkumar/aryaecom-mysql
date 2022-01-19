@@ -1,10 +1,10 @@
 const express = require("express");
 // const authRouter = require("./auth");
-const bookRouter = require("./userRoute");
+const userRouter = require("./userRoute");
 
 const app = express();
 
 // app.use("/auth/", authRouter);
-app.use("/", bookRouter);
+app.use("/", userRouter);
 
 module.exports = app;
