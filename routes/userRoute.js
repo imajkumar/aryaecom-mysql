@@ -21,6 +21,7 @@ const {
 
 router.post("/adminRegister",checkSchema(adminRegisterSchema),UserController.adminRegister);
 router.post("/adminLogin",checkSchema(adminLoginSchema),UserController.adminLogin);
+router.post("/getuser",checkSchema(adminLoginSchema),UserController.getuser);
 
 
 

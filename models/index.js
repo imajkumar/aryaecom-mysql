@@ -20,4 +20,16 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.User = require("./user.model")(sequelize, Sequelize);
+db.Order = require("./order.model")(sequelize, Sequelize);
+db.User.hasMany(db.Order, { as: "ordersA" })
+db.Order.belongsTo(db.User, {
+  foreignKey: "userId",
+  as: "user",
+});
+
+db.sequelize.sync({alter:true}).then(() => {
+  console.log('Drop and Resync with { force: true }');
+});
+
+
 module.exports = db;

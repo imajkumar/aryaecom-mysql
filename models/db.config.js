@@ -1,12 +1,16 @@
+import { NODE_ENV } from '../config/env';
+import databaseConfig from '../config/config.json'
+const databaseConfigEnv = databaseConfig[NODE_ENV]
+
 module.exports = {
 
-    HOST: "localhost",
+    HOST:  databaseConfigEnv.host,
 
-    USER: "admin",
+    USER: databaseConfigEnv.username,
 
-    PASSWORD: "home",
+    PASSWORD: databaseConfigEnv.password,
 
-    DB: "app",
+    DB:databaseConfigEnv.database, 
 
     dialect: "mysql",
 

@@ -6,7 +6,7 @@ const params = require('../config/params.json');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('root_users', [
+    return queryInterface.bulkInsert('users', [
       {
         first_name: 'The Store',
         email: 'store@admin.com',

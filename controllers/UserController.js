@@ -11,6 +11,35 @@ var generateRandomNDigits = ( n ) =>
     return Math.floor( Math.random() * ( 9 * Math.pow( 10, n ) ) ) + Math.pow( 10, n );
 };
 
+//getUser
+exports.getuser = [
+    async function ( req, res )
+    {
+        try
+        {
+           
+            // return await db.User.findAll({
+            //     include: ["orders"],
+            //   }).then((tutorials) => {
+            //     return tutorials;
+            //   });
+            var data=await db.User.findAll(
+                {
+                    include: ["ordersA"],
+                }
+            );
+
+            return apiResponse.successResponseWithData( res, "New User Created.", data );
+
+
+        } catch ( err )
+        {
+            return apiResponse.ErrorResponse( res, err );
+        }
+    }
+]
+//getUser
+
 //adminLogin
 exports.adminLogin = [
     async function ( req, res )

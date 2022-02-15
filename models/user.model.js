@@ -1,12 +1,12 @@
 // User
 module.exports = function ( sequelize, DataTypes )
 {
-  let UsersModel = sequelize.define( "admin_users", {
+  let UsersModel = sequelize.define( "users", {
 
-    first_name: {
+    firstname: {
       type: DataTypes.STRING,
     },
-    last_name: {
+    lastname: {
       type: DataTypes.STRING,
     },
     phone: {
@@ -29,15 +29,12 @@ module.exports = function ( sequelize, DataTypes )
     },
     is_email_verify: {
       type: DataTypes.INTEGER,
-    },
-    is_email_verify: {
-      type: DataTypes.INTEGER,
-    },
+    },  
     is_user_active: {
       type: DataTypes.DATE,
-    },
-
-
+    }
+    
   } );
+  
   return UsersModel;
 };
